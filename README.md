@@ -1,5 +1,20 @@
 # Reflections
 
+Desafios: 
+
+- [] Endpoint da diferença de datas
+- [] Modelo de Reflections
+- [] Integrar com BD
+- [] Busca de Reflections por data
+- [x] Modelo dos users
+- [] Publicação
+- [] App que consome a API
+
+
+
+
+# Elixir/Phoenix Stuff:
+
 To start your Phoenix server:
 
   * Install dependencies with `mix deps.get`
