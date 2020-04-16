@@ -5,9 +5,9 @@ defmodule Reflections.Repo.Migrations.CreateUsers do
     create table(:users) do
       add :email, :string, null: false
       add :password_hash, :string
-      add :" is_active", :boolean, default: false, null: false
+      add :is_active, :boolean, default: false, null: false
 
-      timestamps()
+      timestamps(type: :utc_datetime_usec)
     end
 
     create unique_index(:users, [:email])

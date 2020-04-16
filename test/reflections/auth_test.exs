@@ -6,9 +6,9 @@ defmodule Reflections.AuthTest do
   describe "users" do
     alias Reflections.Auth.User
 
-    @valid_attrs %{" is_active": true, email: "some email"}
-    @update_attrs %{" is_active": false, email: "some updated email"}
-    @invalid_attrs %{" is_active": nil, email: nil}
+    @valid_attrs %{is_active: true, email: "some email", password: "some password"}
+    @update_attrs %{is_active: false, email: "some updated email", password: "some updated password"}
+    @invalid_attrs %{is_active: nil, email: nil, password: nil}
 
     def user_fixture(attrs \\ %{}) do
       {:ok, user} =
@@ -21,18 +21,27 @@ defmodule Reflections.AuthTest do
 
     test "list_users/0 returns all users" do
       user = user_fixture()
-      assert Auth.list_users() == [user]
+      [actual_user] = Auth.list_users()
+      assert actual_user.email == user.email
+      assert actual_user.is_active == user.is_active
+      assert actual_user.password_hash == user.password_hash
     end
 
     test "get_user!/1 returns the user with given id" do
       user = user_fixture()
-      assert Auth.get_user!(user.id) == user
+
+      actual_user = Auth.get_user!(user.id)
+      
+      assert actual_user.email == user.email
+      assert actual_user.is_active == user.is_active
+      assert actual_user.password_hash == user.password_hash
     end
 
     test "create_user/1 with valid data creates a user" do
       assert {:ok, %User{} = user} = Auth.create_user(@valid_attrs)
-      assert user. is_active == true
+      assert user.is_active == true
       assert user.email == "some email"
+      assert Bcrypt.verify_pass("some password", user.password_hash)
     end
 
     test "create_user/1 with invalid data returns error changeset" do
@@ -42,14 +51,20 @@ defmodule Reflections.AuthTest do
     test "update_user/2 with valid data updates the user" do
       user = user_fixture()
       assert {:ok, %User{} = user} = Auth.update_user(user, @update_attrs)
-      assert user. is_active == false
+      assert user.is_active == false
       assert user.email == "some updated email"
+      assert Bcrypt.verify_pass("some updated password", user.password_hash)
     end
 
     test "update_user/2 with invalid data returns error changeset" do
       user = user_fixture()
+
       assert {:error, %Ecto.Changeset{}} = Auth.update_user(user, @invalid_attrs)
-      assert user == Auth.get_user!(user.id)
+
+      actual_user = Auth.get_user!(user.id)
+      assert actual_user.email == user.email
+      assert actual_user.is_active == user.is_active
+      assert actual_user.password_hash == user.password_hash
     end
 
     test "delete_user/1 deletes the user" do
