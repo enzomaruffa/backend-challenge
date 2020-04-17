@@ -4,7 +4,7 @@ Desafios:
 
 - [] Endpoint da diferença de datas
 - [] Modelo de Reflections
-- [] Integrar com BD
+- [x] Integrar com BD
 - [] Busca de Reflections por data
 - [x] Modelo dos users
 - [] Publicação

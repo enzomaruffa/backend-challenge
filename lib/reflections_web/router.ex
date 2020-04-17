@@ -29,24 +29,23 @@ defmodule ReflectionsWeb.Router do
     post "/users/sign_in", UserController, :sign_in
   end
 
-
-scope "/api", ReflectionsWeb do
-  pipe_through [:api, :api_auth]
-  resources "/users", UserController, except: [:new, :edit]
-end
-
-# Plug function
-defp ensure_authenticated(conn, _opts) do
-  current_user_id = get_session(conn, :current_user_id)
-
-  if current_user_id do
-    conn
-  else
-    conn
-    |> put_status(:unauthorized)
-    |> put_view(ReflectionsWeb.ErrorView)
-    |> render("401.json", message: "Unauthenticated user")
-    |> halt()
-    end
+  scope "/api", ReflectionsWeb do
+    pipe_through [:api, :api_auth]
+    resources "/users", UserController, except: [:new, :edit]
   end
+
+  # Plug function
+  defp ensure_authenticated(conn, _opts) do
+    current_user_id = get_session(conn, :current_user_id)
+
+    if current_user_id do
+      conn
+    else
+      conn
+      |> put_status(:unauthorized)
+      |> put_view(ReflectionsWeb.ErrorView)
+      |> render("401.json", message: "Unauthenticated user")
+      |> halt()
+      end
+    end
 end
