@@ -3,6 +3,7 @@ defmodule ReflectionsWeb.UserControllerTest do
 
   alias Reflections.Auth
   alias Reflections.Auth.User
+  alias Plug.Test
 
   @create_attrs %{
     email: "some email",
@@ -15,20 +16,37 @@ defmodule ReflectionsWeb.UserControllerTest do
     password: "some updated password"
   }
   @invalid_attrs %{email: nil, is_active: nil, password: nil}
+  @current_user_attrs %{
+    email: "some current user email",
+    is_active: true,
+    password: "some current user password"
+  }
 
   def fixture(:user) do
     {:ok, user} = Auth.create_user(@create_attrs)
     user
   end
 
+  def fixture(:current_user) do
+    {:ok, current_user} = Auth.create_user(@current_user_attrs)
+    current_user
+  end
+
   setup %{conn: conn} do
-    {:ok, conn: put_req_header(conn, "accept", "application/json")}
+    {:ok, conn: conn, current_user: current_user} = setup_current_user(conn)
+    {:ok, conn: put_req_header(conn, "accept", "application/json"), current_user: current_user}
   end
 
   describe "index" do
-    test "lists all users", %{conn: conn} do
+    test "lists all users", %{conn: conn, current_user: current_user} do
       conn = get(conn, Routes.user_path(conn, :index))
-      assert json_response(conn, 200)["data"] == []
+      assert json_response(conn, 200)["data"] == [
+        %{
+          "id" => current_user.id,
+          "email" => current_user.email,
+          "is_active" => current_user.is_active
+        }
+      ]
     end
   end
 
@@ -50,10 +68,7 @@ defmodule ReflectionsWeb.UserControllerTest do
 
     test "renders errors when data is invalid", %{conn: conn} do
       conn = post(conn, Routes.user_path(conn, :create), user: @invalid_attrs)
-      response = json_response(conn, 422)
-      IO.inspect(response)
-      errors = response["errors"]
-      assert errors != %{}
+      assert json_response(conn, 422) == "Unprocessable Entity"
     end
   end
 
@@ -75,7 +90,7 @@ defmodule ReflectionsWeb.UserControllerTest do
 
     test "renders errors when data is invalid", %{conn: conn, user: user} do
       conn = put(conn, Routes.user_path(conn, :update, user), user: @invalid_attrs)
-      assert json_response(conn, 422)["errors"] != %{}
+      assert json_response(conn, 422) == "Unprocessable Entity"
     end
   end
 
@@ -92,8 +107,63 @@ defmodule ReflectionsWeb.UserControllerTest do
     end
   end
 
+  describe "sign in user" do
+      test "renders user when user credentials are good", %{
+        conn: conn,
+        current_user: current_user
+      } do
+      conn =
+        post(
+          conn,
+          Routes.user_path(conn, :sign_in, %{
+            email: current_user.email,
+            password: @current_user_attrs.password
+          })
+        )
+    
+      assert json_response(conn, 200)["data"] == %{
+        "user" => %{
+        "id" => current_user.id,
+        "email" => current_user.email
+      }
+    }
+    end
+    
+    test "renders errors when user credentials are bad", %{conn: conn} do
+      conn =
+        post(
+          conn,
+          Routes.user_path(conn, :sign_in, %{
+            email: "non-existent email",
+            password: ""
+          })
+        )
+    
+      assert json_response(conn, 401)["errors"] == %{
+        "detail" => "Wrong email or password"
+      }
+    end
+
+    test "authenticate_user/2 authenticates the user" do
+      user = fixture(:user)
+      assert {:error, "Wrong email or password"} = Auth.authenticate_user("wrong email", "")
+      assert {:ok, authenticated_user} = Auth.authenticate_user(@create_attrs.email, @create_attrs.password)
+      assert authenticated_user.email == user.email
+      assert authenticated_user.is_active == user.is_active
+    end
+  end
+    
   defp create_user(_) do
     user = fixture(:user)
     {:ok, user: user}
+  end
+
+  defp setup_current_user(conn) do
+    current_user = fixture(:current_user)
+    {
+      :ok,
+      conn: Test.init_test_session(conn, current_user_id: current_user.id),
+      current_user: current_user
+    }
   end
 end
