@@ -6,8 +6,8 @@ defmodule Reflections.ReflectionTest do
   describe "user_reflections" do
     alias Reflections.Reflection.UserReflection
 
-    @valid_attrs %{public: 42, text: "some text"}
-    @update_attrs %{public: 43, text: "some updated text"}
+    @valid_attrs %{public: true, text: "some text"}
+    @update_attrs %{public: false, text: "some updated text"}
     @invalid_attrs %{public: nil, text: nil}
 
     def user_reflection_fixture(attrs \\ %{}) do
@@ -31,8 +31,7 @@ defmodule Reflections.ReflectionTest do
 
     test "create_user_reflection/1 with valid data creates a user_reflection" do
       assert {:ok, %UserReflection{} = user_reflection} = Reflection.create_user_reflection(@valid_attrs)
-      assert user_reflection.creation_date == ~T[14:00:00.000000]
-      assert user_reflection.public == 42
+      assert user_reflection.public == true
       assert user_reflection.text == "some text"
     end
 
@@ -43,8 +42,7 @@ defmodule Reflections.ReflectionTest do
     test "update_user_reflection/2 with valid data updates the user_reflection" do
       user_reflection = user_reflection_fixture()
       assert {:ok, %UserReflection{} = user_reflection} = Reflection.update_user_reflection(user_reflection, @update_attrs)
-      assert user_reflection.creation_date == ~T[15:01:01.000000]
-      assert user_reflection.public == 43
+      assert user_reflection.public == false
       assert user_reflection.text == "some updated text"
     end
 

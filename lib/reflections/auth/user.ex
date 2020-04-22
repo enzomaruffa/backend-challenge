@@ -8,8 +8,8 @@ defmodule Reflections.Auth.User do
     field :password, :string, virtual: true
     field :password_hash, :string
 
-    has_many :reflections, Reflection.UserReflection
-    many_to_many :shared_reflections, Reflection.UserReflection, join_through: "users_users_reflections" # I'm new!
+    has_many :reflections, Reflections.Reflection.UserReflection
+    many_to_many :shared_reflections, Reflections.Reflection.UserReflection, join_through: "users_users_reflections" # I'm new!
 
     timestamps(type: :utc_datetime_usec)
   end

@@ -3,12 +3,11 @@ defmodule Reflections.Reflection.UserReflection do
   import Ecto.Changeset
 
   schema "user_reflections" do
-    field :public, :integer
+    field :public, :boolean
     field :text, :string
     
-    belongs_to :user, Auth.User
-
-    many_to_many :shared_users, Auth.User, join_through: "users_users_reflections" # I'm new!
+    belongs_to :user, Reflections.Auth.User
+    many_to_many :shared_users, Reflections.Auth.User, join_through: "users_users_reflections" # I'm new!
 
     timestamps(type: :utc_datetime_usec)
 
