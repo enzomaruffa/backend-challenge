@@ -102,14 +102,12 @@ defmodule Reflections.Auth do
     User.changeset(user, %{})
   end
 
-
   ######
 
   def fetch_email(email) do
     from(u in User, where: u.email == ^email)
     |> Repo.one!()
   end
-
 
   # Auth
 
