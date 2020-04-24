@@ -31,8 +31,8 @@ defmodule ReflectionsWeb.Router do
 
   scope "/api", ReflectionsWeb do
     pipe_through [:api, :api_auth]
-    resources "/userreflections", User, except: [:new, :edit]
-    resources "/users", UserReflectionController, except: [:new, :edit]
+    resources "/userreflections", UserReflectionController, except: [:new, :edit]
+    resources "/users", UserController, except: [:new, :edit]
   end
 
   # Plug function

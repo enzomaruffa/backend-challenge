@@ -42,7 +42,7 @@ defmodule ReflectionsWeb.UserController do
   end
 
   def sign_in(conn, %{"email" => email, "password" => password}) do
-    case Reflections.Auth.authenticate_user(email, password) do
+    case Auth.authenticate_user(email, password) do
       {:ok, user} ->
         conn
         |> put_status(:ok)
