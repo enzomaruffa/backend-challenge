@@ -1,6 +1,7 @@
 defmodule ReflectionsWeb.UserReflectionControllerTest do
   use ReflectionsWeb.ConnCase
 
+  alias Reflections.Auth
   alias Reflections.Reflection
   alias Reflections.Reflection.UserReflection
   alias Plug.Test
@@ -15,12 +16,24 @@ defmodule ReflectionsWeb.UserReflectionControllerTest do
   }
   @invalid_attrs %{public: nil, text: nil}
 
+  @current_user_attrs %{
+    email: "some current user email",
+    is_active: true,
+    password: "some current user password"
+  }
+
+  def fixture(:current_user) do
+    {:ok, current_user} = Auth.create_user(@current_user_attrs)
+    current_user
+  end
+
   def fixture(:user_reflection) do
     {:ok, user_reflection} = Reflection.create_user_reflection(@create_attrs)
     user_reflection
   end
 
   setup %{conn: conn} do
+    {:ok, conn: conn, current_user: current_user} = setup_current_user(conn)
     {:ok, conn: put_req_header(conn, "accept", "application/json")}
   end
 
@@ -47,7 +60,7 @@ defmodule ReflectionsWeb.UserReflectionControllerTest do
 
     test "renders errors when data is invalid", %{conn: conn} do
       conn = post(conn, Routes.user_reflection_path(conn, :create), user_reflection: @invalid_attrs)
-      assert json_response(conn, 422)["errors"] != %{}
+      assert json_response(conn, 422) == "Unprocessable Entity"
     end
   end
 
@@ -69,7 +82,7 @@ defmodule ReflectionsWeb.UserReflectionControllerTest do
 
     test "renders errors when data is invalid", %{conn: conn, user_reflection: user_reflection} do
       conn = put(conn, Routes.user_reflection_path(conn, :update, user_reflection), user_reflection: @invalid_attrs)
-      assert json_response(conn, 422)["errors"] != %{}
+      assert json_response(conn, 422) == "Unprocessable Entity"
     end
   end
 
@@ -89,5 +102,14 @@ defmodule ReflectionsWeb.UserReflectionControllerTest do
   defp create_user_reflection(_) do
     user_reflection = fixture(:user_reflection)
     {:ok, user_reflection: user_reflection}
+  end
+
+  defp setup_current_user(conn) do
+    current_user = fixture(:current_user)
+    {
+      :ok,
+      conn: Test.init_test_session(conn, current_user_id: current_user.id),
+      current_user: current_user
+    }
   end
 end
