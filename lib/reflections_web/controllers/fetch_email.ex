@@ -59,11 +59,12 @@ defmodule ReflectionsWeb.UserController do
     end
   end
 
-  def date_difference(conn, %{"date1" => date1, "date2" => date2}) do
-    # Date.from_erl({2016, 12, 4})
-    # difference = convert_date(date1)
-    # |> Date.diff(convert_date(date2))
+  def fetch_user_email(conn, %{"email" => email}) do
+    user = Auth.fetch_email(email)
+    render(conn, "show.json", user: user)
+  end
 
+  def date_difference(conn, %{"date1" => date1, "date2" => date2}) do
     {_status, newDate1} = convert_date(date1)
     {_status, newDate2} = convert_date(date2)
      

@@ -48,6 +48,18 @@ defmodule ReflectionsWeb.UserControllerTest do
         }
       ]
     end
+
+    test "lists single users with email", %{conn: conn, current_user: current_user} do
+      conn = post(conn, Routes.user_path(conn, :fetch_user_email, %{
+        email: current_user.email
+      }))
+      assert json_response(conn, 200)["data"] ==
+      %{
+        "id" => current_user.id,
+        "email" => current_user.email,
+        "is_active" => current_user.is_active
+      }
+    end
   end
 
   describe "create user" do

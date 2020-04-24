@@ -3,9 +3,9 @@ defmodule Reflections.Repo.Migrations.CreateUsers do
 
   def change do
     create table(:users) do
-      add :email, :string, null: false
-      add :password_hash, :string
-      add :is_active, :boolean, default: false, null: false
+      add :email,                :string, null: false
+      add :password_hash,        :string
+      add :is_active,            :boolean, default: false, null: false
 
       timestamps(type: :utc_datetime_usec)
     end

@@ -102,6 +102,17 @@ defmodule Reflections.Auth do
     User.changeset(user, %{})
   end
 
+
+  ######
+
+  def fetch_email(email) do
+    query = from(u in User, where: u.email == ^email)
+    |> Repo.one()
+  end
+
+
+  # Auth
+
   def authenticate_user(email, password) do
     query = from(u in User, where: u.email == ^email)
     query |> Repo.one() |> verify_password(password)

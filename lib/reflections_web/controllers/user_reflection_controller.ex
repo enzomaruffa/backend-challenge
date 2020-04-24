@@ -40,4 +40,20 @@ defmodule ReflectionsWeb.UserReflectionController do
       send_resp(conn, :no_content, "")
     end
   end
+
+  def fetch_user_email(conn, %{"email" => email}) do
+
+  end
+
+  def fetch_reflection_id(conn, %{"id" => id}) do
+
+  end
+
+  def fetch_dates(conn, %{"date1" => date1}) do
+
+  end
+
+  def fetch_dates(conn, %{"date1" => date1, "date2" => date2}) do
+
+  end
 end

@@ -42,6 +42,16 @@ defmodule ReflectionsWeb.UserReflectionControllerTest do
       conn = get(conn, Routes.user_reflection_path(conn, :index))
       assert json_response(conn, 200)["data"] == []
     end
+
+    # test "lists all user_reflections shared with user", %{conn: conn} do
+    #   conn = post(conn, Routes.user_reflection_path(conn, :fetch_user_email), @current_user_attrs.email)
+    #   assert json_response(conn, 200)["data"] == []
+    # end
+
+    # test "get a single user_reflection by id", %{conn: conn} do
+    #   conn = post(conn, Routes.user_reflection_path(conn, :fetch_reflection_id), %{ id: 1 })
+    #   assert json_response(conn, 200)["data"] == []
+    # end
   end
 
   describe "create user_reflection" do
