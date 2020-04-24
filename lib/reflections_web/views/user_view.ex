@@ -26,4 +26,12 @@ defmodule ReflectionsWeb.UserView do
       }
     }
   end
+
+  def render("date_difference.json", %{difference: difference}) do
+    %{
+      data: %{
+        difference: difference
+      }
+    }
+  end
 end

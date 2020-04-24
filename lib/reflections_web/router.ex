@@ -27,6 +27,7 @@ defmodule ReflectionsWeb.Router do
   scope "/api", ReflectionsWeb do
     pipe_through :api
     post "/users/sign_in", UserController, :sign_in
+    post "/users/date_difference", UserController, :date_difference
   end
 
   scope "/api", ReflectionsWeb do

@@ -152,6 +152,23 @@ defmodule ReflectionsWeb.UserControllerTest do
       assert authenticated_user.is_active == user.is_active
     end
   end
+
+  describe "date difference" do
+    test "renders when date difference is correct", %{ conn: conn } do
+    conn =
+      post(
+        conn,
+        Routes.user_path(conn, :date_difference, %{
+          date1: "06072020",
+          date2: "05022019"
+        })
+      )
+  
+      assert json_response(conn, 200)["data"] == %{
+        "difference" => 517
+      }
+    end
+  end
     
   defp create_user(_) do
     user = fixture(:user)

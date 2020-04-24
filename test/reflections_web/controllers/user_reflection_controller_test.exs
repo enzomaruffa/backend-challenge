@@ -33,7 +33,7 @@ defmodule ReflectionsWeb.UserReflectionControllerTest do
   end
 
   setup %{conn: conn} do
-    {:ok, conn: conn, current_user: current_user} = setup_current_user(conn)
+    {:ok, conn: conn, current_user: _current_user} = setup_current_user(conn)
     {:ok, conn: put_req_header(conn, "accept", "application/json")}
   end
 

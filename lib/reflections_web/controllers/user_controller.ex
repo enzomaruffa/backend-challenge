@@ -58,4 +58,34 @@ defmodule ReflectionsWeb.UserController do
         |> render("401.json", message: message)
     end
   end
+
+  def date_difference(conn, %{"date1" => date1, "date2" => date2}) do
+    # Date.from_erl({2016, 12, 4})
+    # difference = convert_date(date1)
+    # |> Date.diff(convert_date(date2))
+
+    {_status, newDate1} = convert_date(date1)
+    {_status, newDate2} = convert_date(date2)
+     
+    difference = Date.diff(newDate1, newDate2)
+
+    conn
+    |> put_status(:ok)
+    |> put_view(ReflectionsWeb.UserView)
+    |> render("date_difference.json", difference: difference)
+  end
+
+  defp convert_date(date) do
+    days = String.slice(date, 0, 2)
+    months = String.slice(date, 2, 2)
+    years = String.slice(date, 4, 4)
+
+    {days_i, _remainder_of_binary} = Integer.parse(days)
+    {months_i, _remainder_of_binary} = Integer.parse(months)
+    {years_i, _remainder_of_binary} = Integer.parse(years)
+    
+    {years_i, months_i, days_i}
+    |> Date.from_erl()
+  end
+
 end
