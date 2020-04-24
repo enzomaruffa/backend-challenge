@@ -106,16 +106,16 @@ defmodule Reflections.Auth do
   ######
 
   def fetch_email(email) do
-    query = from(u in User, where: u.email == ^email)
-    |> Repo.one()
+    from(u in User, where: u.email == ^email)
+    |> Repo.one!()
   end
 
 
   # Auth
 
   def authenticate_user(email, password) do
-    query = from(u in User, where: u.email == ^email)
-    query |> Repo.one() |> verify_password(password)
+    from(u in User, where: u.email == ^email)
+    |> Repo.one() |> verify_password(password)
   end
 
   defp verify_password(nil, _) do

@@ -7,9 +7,8 @@ Desafios:
 - [x] Integrar com BD
 - [] Busca de Reflections por data
 - [x] Modelo dos users
-- [] Busca de User por Name
-- [] Busca de User por Username
-- [] Busca de Reflections asscoaidas com um user
+- [x] Busca de User por Email
+- [] Busca de Reflections associadas com um user
 - [] Publicação
 - [] App que consome a API
 
