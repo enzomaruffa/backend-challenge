@@ -115,4 +115,83 @@ defmodule Reflections.Reflection do
     Repo.all(from r in UserReflection, where: r.public == ^true)
     # Repo.all(UserReflection)
   end
+
+
+  @doc """
+  Returns the list of user_reflections from user with id user_id.
+
+  ## Examples
+
+      iex> list_user_reflections()
+      [%UserReflection{}, ...]
+
+  """
+  def list_user_reflections(user_id) do
+    Repo.all(from r in UserReflection, where: r.user_id == ^user_id)
+  end
+
+  @doc """
+  Returns the list of public user_reflections, from date1 to now.
+
+  ## Examples
+
+      iex> list_user_reflections()
+      [%UserReflection{}, ...]
+
+  """
+  def list_public_user_reflections(date1) do
+    Repo.all(from r in UserReflection, where:
+      fragment("?::date", r.inserted_at) >= ^date1
+    )
+  end
+
+  @doc """
+  Returns the list of user_reflections from user with id user_id, from date1 to now.
+
+  ## Examples
+
+      iex> list_user_reflections()
+      [%UserReflection{}, ...]
+
+  """
+  def list_user_reflections(user_id, date1) do
+    Repo.all(from r in UserReflection, where: 
+      r.user_id == ^user_id and 
+      fragment("?::date", r.inserted_at) >= ^date1
+    )
+  end
+
+  @doc """
+  Returns the list of public user_reflections, from date1 to date2.
+
+  ## Examples
+
+      iex> list_user_reflections()
+      [%UserReflection{}, ...]
+
+  """
+  def list_public_user_reflections(date1, date2) do
+    Repo.all(from r in UserReflection, where:
+      fragment("?::date", r.inserted_at) >= ^date1 and
+      fragment("?::date", r.inserted_at) <= ^date2
+    )
+  end
+
+  @doc """
+  Returns the list of user_reflections from user with id user_id, from date1 to date2.
+
+  ## Examples
+
+      iex> list_user_reflections()
+      [%UserReflection{}, ...]
+
+  """
+  def list_user_reflections(user_id, date1, date2) do
+    Repo.all(from r in UserReflection, where:
+      r.user_id == ^user_id and 
+      fragment("?::date", r.inserted_at) >= ^date1 and
+      fragment("?::date", r.inserted_at) <= ^date2
+    )
+  end
+
 end

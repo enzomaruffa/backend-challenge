@@ -38,7 +38,7 @@ defmodule ReflectionsWeb.UserReflectionControllerTest do
   end
 
   describe "index" do
-    test "lists all user_reflections", %{conn: conn} do
+    test "lists all user_reflections from the current user", %{conn: conn} do
       conn = get(conn, Routes.user_reflection_path(conn, :index))
       assert json_response(conn, 200)["data"] == []
     end
@@ -48,15 +48,38 @@ defmodule ReflectionsWeb.UserReflectionControllerTest do
       assert json_response(conn, 200)["data"] == []
     end
 
-    # test "lists all user_reflections from date1 to now", %{conn: conn} do
-    #   conn = post(conn, Routes.user_reflection_path(conn, :fetch_user_email), @current_user_attrs.email)
-    #   assert json_response(conn, 200)["data"] == []
-    # end
+    # Fetch dates
+    test "lists all public user_reflections from date1 to date2", %{conn: conn} do
+      conn = get(conn, Routes.user_reflection_path(conn, :public_fetch_dates, %{
+        date1: "15032010",
+        date2: "15052020"
+      }))
+      assert json_response(conn, 200)["data"] == []
+    end
 
-    # test "get a single user_reflection by id", %{conn: conn} do
-    #   conn = post(conn, Routes.user_reflection_path(conn, :fetch_reflection_id), %{ id: 1 })
-    #   assert json_response(conn, 200)["data"] == []
-    # end
+    test "lists all user_reflections from date1 to date2", %{conn: conn} do
+      conn = get(conn, Routes.user_reflection_path(conn, :fetch_dates, %{
+        date1: "15032010",
+        date2: "15052020"
+      }))
+      assert json_response(conn, 200)["data"] == []
+    end
+
+    # Fetch date
+    test "lists all public user_reflections from date1 to now", %{conn: conn} do
+      conn = get(conn, Routes.user_reflection_path(conn, :public_fetch_date, %{
+        date1: "15032010"
+      }))
+      assert json_response(conn, 200)["data"] == []
+    end
+
+    test "lists all user_reflections from date1 to now", %{conn: conn} do
+      conn = get(conn, Routes.user_reflection_path(conn, :fetch_date, %{
+        date1: "15032010"
+      }))
+      assert json_response(conn, 200)["data"] == []
+    end
+
   end
 
   describe "create user_reflection" do

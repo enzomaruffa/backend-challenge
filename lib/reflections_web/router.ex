@@ -30,12 +30,9 @@ defmodule ReflectionsWeb.Router do
     
     post "/users/date_difference", UserController, :date_difference
 
-    post "/userreflections/get_user_id", UserReflectionController, :fetch_user_email
-
-    get "/userreflections/public_get_reflection_id", UserReflectionController, :public_fetch_reflection_id
+    get "/userreflections/public", UserReflectionController, :public_index
     get "/userreflections/public_get_dates", UserReflectionController, :public_fetch_dates
     get "/userreflections/public_get_date", UserReflectionController, :public_fetch_date
-    get "/userreflections/public", UserReflectionController, :public_index
   end
 
   scope "/api", ReflectionsWeb do
@@ -45,7 +42,6 @@ defmodule ReflectionsWeb.Router do
 
     post "/users/get_email", UserController, :fetch_user_email
 
-    get "/userreflections/get_reflection_id", UserReflectionController, :fetch_reflection_id
     get "/userreflections/get_dates", UserReflectionController, :fetch_dates
     get "/userreflections/get_date", UserReflectionController, :fetch_date
   end
