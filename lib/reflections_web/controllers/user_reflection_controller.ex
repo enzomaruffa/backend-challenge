@@ -11,6 +11,11 @@ defmodule ReflectionsWeb.UserReflectionController do
     render(conn, "index.json", user_reflections: user_reflections)
   end
 
+  def public_index(conn, _params) do
+    user_reflections = Reflection.list_public_user_reflections()
+    render(conn, "index.json", user_reflections: user_reflections)
+  end
+
   def create(conn, %{"user_reflection" => user_reflection_params}) do
     with {:ok, %UserReflection{} = user_reflection} <- Reflection.create_user_reflection(user_reflection_params) do
       conn

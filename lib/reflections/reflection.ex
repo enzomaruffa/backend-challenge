@@ -101,4 +101,18 @@ defmodule Reflections.Reflection do
   def change_user_reflection(%UserReflection{} = user_reflection) do
     UserReflection.changeset(user_reflection, %{})
   end
+
+  @doc """
+  Returns the list of all public user_reflections.
+
+  ## Examples
+
+      iex> list_user_reflections()
+      [%UserReflection{}, ...]
+
+  """
+  def list_public_user_reflections do
+    Repo.all(from r in UserReflection, where: r.public == ^true)
+    # Repo.all(UserReflection)
+  end
 end

@@ -27,17 +27,27 @@ defmodule ReflectionsWeb.Router do
   scope "/api", ReflectionsWeb do
     pipe_through :api
     post "/users/sign_in", UserController, :sign_in
+    
     post "/users/date_difference", UserController, :date_difference
+
     post "/userreflections/get_user_id", UserReflectionController, :fetch_user_email
-    post "/userreflections/get_reflection_id", UserReflectionController, :fetch_reflection_id
-    post "/userreflections/get_dates", UserReflectionController, :fetch_dates
+
+    get "/userreflections/public_get_reflection_id", UserReflectionController, :public_fetch_reflection_id
+    get "/userreflections/public_get_dates", UserReflectionController, :public_fetch_dates
+    get "/userreflections/public_get_date", UserReflectionController, :public_fetch_date
+    get "/userreflections/public", UserReflectionController, :public_index
   end
 
   scope "/api", ReflectionsWeb do
     pipe_through [:api, :api_auth]
     resources "/users", UserController, except: [:new, :edit]
     resources "/userreflections", UserReflectionController, except: [:new, :edit]
+
     post "/users/get_email", UserController, :fetch_user_email
+
+    get "/userreflections/get_reflection_id", UserReflectionController, :fetch_reflection_id
+    get "/userreflections/get_dates", UserReflectionController, :fetch_dates
+    get "/userreflections/get_date", UserReflectionController, :fetch_date
   end
 
   # Plug function
