@@ -115,7 +115,7 @@ defmodule ReflectionsWeb.UserReflectionController do
   end
 
   defp current_user(conn) do
-    current_user_id = get_session(conn, :user_id)
+    current_user_id = get_session(conn, :current_user_id)
     |> Auth.get_user!
   end
 end
