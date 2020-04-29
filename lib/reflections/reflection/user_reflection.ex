@@ -7,7 +7,7 @@ defmodule Reflections.Reflection.UserReflection do
     field :text, :string
     
     belongs_to :user, Reflections.Auth.User
-    many_to_many :shared_users, Reflections.Auth.User, join_through: "users_users_reflections" # I'm new!
+    many_to_many :shared_users, Reflections.Auth.User, join_through: "users_user_reflections" # I'm new!
 
     timestamps(type: :utc_datetime_usec)
 
