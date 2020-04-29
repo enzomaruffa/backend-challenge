@@ -50,10 +50,12 @@ defmodule Reflections.Reflection do
 
   """
   def create_user_reflection(attrs \\ %{}, user) do
-  user
+    # Adds belongs to with current user
+    user
     |> Ecto.build_assoc(:reflections, attrs)
     |> UserReflection.changeset(attrs)
     |> Repo.insert()
+
   end
 
   @doc """
@@ -207,6 +209,25 @@ defmodule Reflections.Reflection do
   """
   def list_shared_user_reflections(user) do
     Repo.all(Ecto.assoc(user, :shared_reflections))
+  end
+
+
+  @doc """
+  Adds sharing between a user and a reflection
+
+  ## Examples
+
+      iex> list_user_reflections()
+      [%UserReflection{}, ...]
+
+  """
+  def add_sharing(user, reflection) do
+    user = Repo.preload(user, [:shared_reflections])
+
+    user_changeset = Ecto.Changeset.change(user)
+    |> Ecto.Changeset.put_assoc(:shared_reflections, [reflection])
+
+    Repo.update!(shared_user_changeset)
   end
 
 end

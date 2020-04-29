@@ -101,6 +101,15 @@ defmodule ReflectionsWeb.UserReflectionController do
     render(conn, "index.json", user_reflections: user_reflections)
   end
 
+  def share_with(conn, %{"user_id" => user_id}, "reflection_id" => reflection_id}) do
+    user = Auth.get_user!(user_id)
+    reflection = Reflection.get_user_reflection!(user_id)
+
+    Reflection.add_sharing(user, reflection)
+
+    render(conn, "show.json", user_reflection: reflection)
+  end
+
   defp convert_date(date) do
     days = String.slice(date, 0, 2)
     months = String.slice(date, 2, 2)

@@ -44,6 +44,8 @@ defmodule ReflectionsWeb.Router do
 
     post "/users/get_email", UserController, :fetch_user_email
 
+    post "/userreflections/share_with", UserReflectionController, :share_with
+
     resources "/users", UserController, except: [:new, :edit]
     resources "/userreflections", UserReflectionController, except: [:new, :edit]
   end
