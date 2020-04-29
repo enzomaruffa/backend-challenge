@@ -32,8 +32,9 @@ defmodule ReflectionsWeb.Router do
     get "/userreflections/public", UserReflectionController, :public_index
     get "/userreflections/public_get_dates", UserReflectionController, :public_fetch_dates
     get "/userreflections/public_get_date", UserReflectionController, :public_fetch_date
-    
+
     post "/users/sign_in", UserController, :sign_in
+    post "/users/create_new", UserController, :create
   end
 
   scope "/api", ReflectionsWeb do
