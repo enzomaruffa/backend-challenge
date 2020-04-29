@@ -21,7 +21,9 @@ defmodule ReflectionsWeb.UserReflectionController do
   end
 
   def create(conn, %{"user_reflection" => user_reflection_params}) do
-    with {:ok, %UserReflection{} = user_reflection} <- Reflection.create_user_reflection(user_reflection_params) do
+    user = current_user(conn)
+    
+    with {:ok, %UserReflection{} = user_reflection} <- Reflection.create_user_reflection(user_reflection_params, user) do
       conn
       |> put_status(:created)
       |> put_resp_header("location", Routes.user_reflection_path(conn, :show, user_reflection))
@@ -93,8 +95,6 @@ defmodule ReflectionsWeb.UserReflectionController do
   end
 
   def shared_with(conn, %{"user_id" => user_id}) do
-    current_user_id = get_session(conn, :user_id)
-
     user = Auth.get_user!(user_id)
 
     user_reflections = Reflection.list_shared_user_reflections(user)
@@ -112,5 +112,10 @@ defmodule ReflectionsWeb.UserReflectionController do
     
     {years_i, months_i, days_i}
     |> Date.from_erl()
+  end
+
+  defp current_user(conn) do
+    current_user_id = get_session(conn, :user_id)
+    |> Auth.get_user!
   end
 end

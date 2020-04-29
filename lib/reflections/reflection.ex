@@ -49,8 +49,9 @@ defmodule Reflections.Reflection do
       {:error, %Ecto.Changeset{}}
 
   """
-  def create_user_reflection(attrs \\ %{}) do
-    %UserReflection{}
+  def create_user_reflection(attrs \\ %{}, user) do
+  user
+    |> Ecto.build_assoc(:reflections, attrs)
     |> UserReflection.changeset(attrs)
     |> Repo.insert()
   end
