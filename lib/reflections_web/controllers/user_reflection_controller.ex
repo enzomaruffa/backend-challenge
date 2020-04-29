@@ -1,6 +1,7 @@
 defmodule ReflectionsWeb.UserReflectionController do
   use ReflectionsWeb, :controller
 
+  alias Reflections.Auth
   alias Reflections.Reflection
   alias Reflections.Reflection.UserReflection
 
@@ -88,6 +89,15 @@ defmodule ReflectionsWeb.UserReflectionController do
     current_user_id = get_session(conn, :current_user_id)
 
     user_reflections = Reflection.list_user_reflections(current_user_id, newDate1, newDate2)
+    render(conn, "index.json", user_reflections: user_reflections)
+  end
+
+  def shared_with(conn, %{"user_id" => user_id}) do
+    current_user_id = get_session(conn, :user_id)
+
+    user = Auth.get_user!(user_id)
+
+    user_reflections = Reflection.list_shared_user_reflections(user)
     render(conn, "index.json", user_reflections: user_reflections)
   end
 

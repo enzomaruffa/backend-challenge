@@ -194,4 +194,18 @@ defmodule Reflections.Reflection do
     )
   end
 
+
+  @doc """
+  Returns the list of user_reflections shared with user
+
+  ## Examples
+
+      iex> list_user_reflections()
+      [%UserReflection{}, ...]
+
+  """
+  def list_shared_user_reflections(user) do
+    Repo.all(Ecto.assoc(user, :shared_reflections))
+  end
+
 end

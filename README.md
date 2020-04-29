@@ -5,10 +5,10 @@ Desafios:
 - [x] Endpoint da diferença de datas
 - [x] Modelo de Reflections
 - [x] Integrar com BD
-- [] Busca de Reflections por data (50%)
+- [x] Busca de Reflections por data
 - [x] Modelo dos users
 - [x] Busca de User por Email
-- [] Busca de Reflections associadas com um user
+- [x] Busca de Reflections associadas com um user
 - [] Publicação
 
 
