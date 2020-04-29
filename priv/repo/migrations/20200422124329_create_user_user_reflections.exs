@@ -7,7 +7,7 @@ defmodule Reflections.Repo.Migrations.CreateUserUserReflections do
       add :user_reflection_id, references(:user_reflections)
     end
 
-    create unique_index(:users_user_reflections, [:user_id, :reflection_id])
+    create unique_index(:users_user_reflections, [:user_id, :user_reflection_id])
   end
 
 end
