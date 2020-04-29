@@ -12,7 +12,7 @@ config :reflections,
 
 # Configures the endpoint
 config :reflections, ReflectionsWeb.Endpoint,
-  url: [host: "localhost"],
+  url: [host: "reflections-phoenix.herokuapp.com"],
   secret_key_base: "EKOBrO8CnKNo8x9YUzMGZELQN7WbMxRiwRDZCEv3KQ6HhYo2UlvKn6ABEkOgtZcy",
   render_errors: [view: ReflectionsWeb.ErrorView, accepts: ~w(html json)],
   pubsub: [name: Reflections.PubSub, adapter: Phoenix.PubSub.PG2],
