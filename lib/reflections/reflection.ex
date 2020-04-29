@@ -224,7 +224,7 @@ defmodule Reflections.Reflection do
   def add_sharing(user, reflection) do
     user = Repo.preload(user, [:shared_reflections])
 
-    user_changeset = Ecto.Changeset.change(user)
+    shared_user_changeset = Ecto.Changeset.change(user)
     |> Ecto.Changeset.put_assoc(:shared_reflections, [reflection])
 
     Repo.update!(shared_user_changeset)

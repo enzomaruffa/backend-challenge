@@ -101,7 +101,7 @@ defmodule ReflectionsWeb.UserReflectionController do
     render(conn, "index.json", user_reflections: user_reflections)
   end
 
-  def share_with(conn, %{"user_id" => user_id}, "reflection_id" => reflection_id}) do
+  def share_with(conn, %{"user_id" => user_id, "reflection_id" => reflection_id}) do
     user = Auth.get_user!(user_id)
     reflection = Reflection.get_user_reflection!(user_id)
 
